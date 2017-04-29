@@ -3,6 +3,7 @@ from zipfile import ZipFile
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+from multiprocessing.pool import ThreadPool
 
 
 # path where data should be placed
@@ -165,6 +166,38 @@ def most_common_labels(data, signnames):
         print(table_format([f, l], width = width))
 
 
+class DataFlow(object):
+    """Serve as a batchwise interface to the data. Returns batches of
+    preprocessed and augmented data. Furthermore the preprocessing and
+    augmentation steps are buffered and run in a new thread. All threads run
+    on the same kernel but if we are training on a GPU the preprocessing and
+    augmentation will run concurrently with the training process and we thus
+    avoid that these operations become the bottleneck of the training
+    procedure."""
+    
+    def __init__(self, X, y, batch_size):
+        self.X = X
+        self.y = y
+        self.batch_size = batch_size
+        self.pool = ThreadPool(1)
+        self._async_next()
+
+
+    def _async_next(self):
+        self.buffer_ = self.pool.apply_async(self._next)
+
+
+    def _next(self):
+        return X[:self.batch_size], y[:self.batch_size]
+
+
+    def get_batch(self):
+        result = self.buffer_.get()
+        self._async_next()
+        return result
+        
+
+
 if __name__ == "__main__":
     files = download_data()
     data = extract_data(files["traffic-signs-data.zip"])
@@ -175,3 +208,8 @@ if __name__ == "__main__":
     visualize_class_examples(data, signnames)
     visualize_label_distributions(data, signnames)
     most_common_labels(data, signnames)
+    
+    X, y = data["train"]
+    batch_size = 64
+    batches = DataFlow(X, y, batch_size)
+    X_batch, y_batch = batches.get_batch()
