@@ -356,8 +356,9 @@ def tf_conv(x, kernel_size, n_features, stride = 1):
     return result
 
 
-def tf_activate(x):
+def tf_activate(x, keep_prob = 1.0):
     method = "relu"
+    x = tf.nn.dropout(x, keep_prob = keep_prob)
     if method == "relu":
         return tf.nn.relu(x)
     elif method == "elu":
@@ -426,27 +427,28 @@ class TSCModel(object):
         # inputs
         self.x = tf.placeholder(tf.float32, shape = img_batch_shape)
         self.y = tf.placeholder(tf.int32, shape = label_batch_shape)
+        self.keep_prob = tf.placeholder(tf.float32)
 
         kernel_size = 3
         n_channels = 32
         # architecture
         features = self.x
-        for i in range(2):
+        for i in range(4):
             features = tf_conv(features, kernel_size, (i+1)*n_channels)
-            features = tf_activate(features)
+            features = tf_activate(features, keep_prob = self.keep_prob)
             features = tf_downsample(features)
         for i in range(2):
             n_features = features.get_shape().as_list()[3]
             residual = features
             for j in range(2):
                 residual = tf_conv(residual, kernel_size, n_features)
-                residual = tf_activate(residual)
+                residual = tf_activate(residual, keep_prob = self.keep_prob)
             features = features + residual
         features = tf_flatten(features)
         features = tf_fc(features, 128)
-        features = tf_activate(features)
+        features = tf_activate(features, keep_prob = self.keep_prob)
         features = tf_fc(features, 64)
-        features = tf_activate(features)
+        features = tf_activate(features, keep_prob = self.keep_prob)
         self.logits = tf_fc(features, self.n_labels)
 
         # loss
@@ -484,7 +486,8 @@ class TSCModel(object):
             X_batch, y_batch = batches.get_batch()
             feed_dict = {
                     self.x: X_batch,
-                    self.y: y_batch}
+                    self.y: y_batch,
+                    self.keep_prob: 0.5}
             fetch_dict = {
                     "train": self.train_op,
                     "loss": self.loss_op,
@@ -522,7 +525,8 @@ class TSCModel(object):
             X_batch, y_batch = batches.get_batch()
             feed_dict = {
                     self.x: X_batch,
-                    self.y: y_batch}
+                    self.y: y_batch,
+                    self.keep_prob: 1.0}
             fetch_dict = {
                     "loss": self.loss_op,
                     "accuracy": self.accuracy_op}
