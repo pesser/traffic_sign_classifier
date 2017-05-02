@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from multiprocessing.pool import ThreadPool
 import tensorflow as tf
+import skimage.transform
 
 
 # path where data should be placed
@@ -180,10 +181,23 @@ class DataFlow(object):
         self.X = X
         self.y = y
         self.batch_size = batch_size
+        self.img_shape = X.shape[1:]
+        self.init_transformations()
         self.pool = ThreadPool(1)
         self.indices = np.arange(self.X.shape[0])
         self.shuffle()
         self._async_next()
+
+
+    def init_transformations(self):
+        """Precompute transformation matrices that are needed for data
+        augmentation."""
+        shifts = (self.img_shape[0] // 2, self.img_shape[1] // 2)
+        unshifts = (-self.img_shape[0] // 2, -self.img_shape[1] // 2)
+        self.preshift = skimage.transform.SimilarityTransform(
+                translation = shifts)
+        self.postshift = skimage.transform.SimilarityTransform(
+                translation = unshifts)
 
 
     def _async_next(self):
@@ -211,10 +225,29 @@ class DataFlow(object):
     def process_batch(self, X, y):
         # normalize to [-1.0, 1.0]
         X = X / 127.5 - 1.0
+
+        for i in range(X.shape[0]):
+            scale = 1.0 + 0.1 * np.random.randn()
+            bias = 0.0 + 0.1 * np.random.randn()
+            X[i] = np.clip(scale*X[i] + bias, -1.0, 1.0)
+
+            angle = 6.0 * np.random.randn()
+            zoom = 1 + 0.1 * np.random.randn()
+            translation = 2.0 * np.random.randn()
+            shear = 0.1 * np.random.randn()
+
+            trafo = skimage.transform.AffineTransform(
+                    translation = translation,
+                    rotation = np.deg2rad(angle),
+                    scale = (zoom, zoom),
+                    shear = shear)
+            centered_trafo = (self.postshift + (trafo + self.preshift))
+            X[i] = skimage.transform.warp(X[i], centered_trafo, mode = "edge", order = 1)
         return X, y
 
 
     def get_batch(self):
+        """Get a batch and prepare next one asynchronuously."""
         result = self.buffer_.get()
         self._async_next()
         return result
@@ -263,7 +296,44 @@ class DataFlowValid(object):
         return math.ceil(self.X.shape[0] / self.batch_size)
 
 
-def tf_conv(x, kernel_size, n_features):
+def tile(X, rows, cols):
+    """Tile images for display."""
+    tiling = np.zeros((rows * X.shape[1], cols * X.shape[2], X.shape[3]), dtype = X.dtype)
+    for i in range(rows):
+        for j in range(cols):
+            idx = i * cols + j
+            if idx < X.shape[0]:
+                img = X[idx,...]
+                tiling[
+                        i*X.shape[1]:(i+1)*X.shape[1],
+                        j*X.shape[2]:(j+1)*X.shape[2],
+                        :] = img
+    return tiling
+
+
+def visualize_augmentation(X, y):
+    """Visualize effect of data augmentation."""
+    n_samples = 10
+    n_augmentations = 9
+    Xbatches = DataFlow(X, y, 64)
+    indices = Xbatches.indices[:n_samples]
+    X_samples = X[indices]
+    y_samples = y[indices]
+    X_augmented = X_samples / 127.5  - 1.0
+    for i in range(n_augmentations):
+        x, _ = Xbatches.process_batch(X_samples, y_samples)
+        X_augmented = np.concatenate([X_augmented, x])
+    X_tiled = tile(X_augmented, n_augmentations + 1, n_samples)
+    X_tiled = (X_tiled + 1.0) / 2.0
+
+    fig = plt.figure(figsize = (10,10))
+    ax = fig.add_subplot(111)
+    ax.imshow(X_tiled)
+    ax.set_axis_off()
+    fig.savefig(os.path.join(img_dir, "data_augmentation.png"))
+
+
+def tf_conv(x, kernel_size, n_features, stride = 1):
     # input shape
     x_shape = x.get_shape().as_list()
     assert(len(x_shape) == 4)
@@ -277,7 +347,6 @@ def tf_conv(x, kernel_size, n_features):
     bias = tf.Variable(tf.zeros((n_features,)))
 
     # operation
-    stride = 1
     padding = "SAME"
     result = tf.nn.conv2d(
             x, weight,
@@ -288,18 +357,29 @@ def tf_conv(x, kernel_size, n_features):
 
 
 def tf_activate(x):
-    return tf.nn.relu(x)
+    method = "relu"
+    if method == "relu":
+        return tf.nn.relu(x)
+    elif method == "elu":
+        return tf.nn.elu(x)
 
 
 def tf_downsample(x):
-    kernel_size = 3
-    stride = 2
-    padding = "SAME"
-    return tf.nn.max_pool(
-            x,
-            ksize = (1, kernel_size, kernel_size, 1),
-            strides = (1, stride, stride, 1),
-            padding = padding)
+    method = "stridedconv"
+    if method == "maxpool":
+        kernel_size = 3
+        stride = 2
+        padding = "SAME"
+        return tf.nn.max_pool(
+                x,
+                ksize = (1, kernel_size, kernel_size, 1),
+                strides = (1, stride, stride, 1),
+                padding = padding)
+    elif method == "stridedconv":
+        x_shape = x.get_shape().as_list()
+        assert(len(x_shape) == 4)
+        x_features = x_shape[3]
+        return tf_conv(x, 3, x_features, stride = 2)
 
 
 def tf_flatten(x):
@@ -328,12 +408,13 @@ def tf_fc(x, n_features):
 
 class TSCModel(object):
 
-    def __init__(self, img_shape, n_labels):
+    def __init__(self, img_shape, n_labels, n_total_steps):
         self.session = tf.Session()
         self.img_shape = img_shape
         self.n_labels = n_labels
-        self.learning_rate = 1e-3
-        self.n_epochs = 100
+        self.n_total_steps = n_total_steps
+        self.initial_learning_rate = 1e-3
+        self.end_learning_rate = 1e-8
         self.log_frequency = 250
         self.logs = dict()
         self.define_graph()
@@ -354,6 +435,13 @@ class TSCModel(object):
             features = tf_conv(features, kernel_size, (i+1)*n_channels)
             features = tf_activate(features)
             features = tf_downsample(features)
+        for i in range(2):
+            n_features = features.get_shape().as_list()[3]
+            residual = features
+            for j in range(2):
+                residual = tf_conv(residual, kernel_size, n_features)
+                residual = tf_activate(residual)
+            features = features + residual
         features = tf_flatten(features)
         features = tf_fc(features, 128)
         features = tf_activate(features)
@@ -371,9 +459,19 @@ class TSCModel(object):
                 self.y)
         self.accuracy_op = tf.reduce_mean(tf.cast(correct_logits, tf.float32))
 
+        self.global_step = tf.Variable(0, trainable = False)
+        self.learning_rate = tf.train.polynomial_decay(
+                learning_rate = self.initial_learning_rate,
+                global_step = self.global_step,
+                decay_steps = self.n_total_steps,
+                end_learning_rate = self.end_learning_rate,
+                power = 1.0)
+
         optimizer = tf.train.AdamOptimizer(
                 learning_rate = self.learning_rate)
-        self.train_op = optimizer.minimize(self.loss_op)
+        self.train_op = optimizer.minimize(
+                self.loss_op,
+                global_step = self.global_step)
 
         # init
         self.session.run(tf.global_variables_initializer())
@@ -382,8 +480,7 @@ class TSCModel(object):
     def fit(self, batches, batches_valid):
         self.batches = batches
         self.batches_valid = batches_valid
-        total_batches = batches.batches_per_epoch() * self.n_epochs
-        for batch in range(total_batches):
+        for batch in range(self.n_total_steps):
             X_batch, y_batch = batches.get_batch()
             feed_dict = {
                     self.x: X_batch,
@@ -391,7 +488,9 @@ class TSCModel(object):
             fetch_dict = {
                     "train": self.train_op,
                     "loss": self.loss_op,
-                    "accuracy": self.accuracy_op}
+                    "accuracy": self.accuracy_op,
+                    "global_step":  self.global_step,
+                    "learning_rate": self.learning_rate}
             result = self.session.run(fetch_dict, feed_dict)
             self.log_training(batch, total_batches, result)
 
@@ -404,6 +503,8 @@ class TSCModel(object):
             self.logs[metric].append(result[metric])
         if batch % self.log_frequency == 0 or batch + 1 == total_batches:
             print("Batch {} / {} = {:.2f} %".format(batch, total_batches, 100 * batch / total_batches))
+            print("{:20}: {}".format("Global step", result["global_step"]))
+            print("{:20}: {:.4e}".format("Learning rate", result["learning_rate"]))
             for metric in metrics:
                 metric_logs = self.logs[metric]
                 average = sum(metric_logs) / len(metric_logs)
@@ -447,6 +548,8 @@ if __name__ == "__main__":
     most_common_labels(data, signnames)
     
     X, y = data["train"]
+    visualize_augmentation(X, y)
+
     batch_size = 64
     batches = DataFlow(X, y, batch_size)
     X_valid, y_valid = data["valid"]
@@ -454,5 +557,7 @@ if __name__ == "__main__":
 
     img_shape = X.shape[1:]
     n_labels = np.unique(y).shape[0]
-    model = TSCModel(img_shape, n_labels)
+    n_epochs = 100
+    total_batches = batches.batches_per_epoch() * n_epochs
+    model = TSCModel(img_shape, n_labels, total_batches)
     model.fit(batches, batches_valid)
