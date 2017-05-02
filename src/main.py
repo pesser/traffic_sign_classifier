@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from multiprocessing.pool import ThreadPool
+import tensorflow as tf
 
 
 # path where data should be placed
@@ -180,6 +181,8 @@ class DataFlow(object):
         self.y = y
         self.batch_size = batch_size
         self.pool = ThreadPool(1)
+        self.indices = np.arange(self.X.shape[0])
+        self.shuffle()
         self._async_next()
 
 
@@ -188,14 +191,248 @@ class DataFlow(object):
 
 
     def _next(self):
-        return X[:self.batch_size], y[:self.batch_size]
+        batch_start, batch_end = self.batch_start, self.batch_start + self.batch_size
+        if batch_end > self.X.shape[0]:
+            self.shuffle()
+            return self._next()
+        else:
+            batch_indices = self.indices[batch_start:batch_end]
+            X_batch, y_batch = self.X[batch_indices], self.y[batch_indices]
+            X_batch, y_batch = self.process_batch(X_batch, y_batch)
+            self.batch_start = batch_end
+            return X_batch, y_batch
+
+
+    def shuffle(self):
+        np.random.shuffle(self.indices)
+        self.batch_start = 0
+
+
+    def process_batch(self, X, y):
+        # normalize to [-1.0, 1.0]
+        X = X / 127.5 - 1.0
+        return X, y
 
 
     def get_batch(self):
         result = self.buffer_.get()
         self._async_next()
         return result
-        
+
+
+    def batches_per_epoch(self):
+        return math.ceil(self.X.shape[0] / self.batch_size)
+
+
+class DataFlowValid(object):
+    """Similiar to DataFlow but for validation/testing data. Does not shuffle and
+    uses a given processing function."""
+
+    def __init__(self, X, y, batch_size, process_batch):
+        self.X = X
+        self.y = y
+        self.batch_size = batch_size
+        self.process_batch = process_batch
+        self.pool = ThreadPool(1)
+        self.batch_start = 0
+        self._async_next()
+
+
+    def _async_next(self):
+        self.buffer_ = self.pool.apply_async(self._next)
+
+
+    def _next(self):
+        batch_start, batch_end = self.batch_start, self.batch_start + self.batch_size
+        X_batch, y_batch = self.X[batch_start:batch_end], self.y[batch_start:batch_end]
+        X_batch, y_batch = self.process_batch(X_batch, y_batch)
+        if batch_end > self.X.shape[0]:
+            self.batch_start = 0
+        else:
+            self.batch_start = batch_end
+        return X_batch, y_batch
+
+
+    def get_batch(self):
+        result = self.buffer_.get()
+        self._async_next()
+        return result
+
+
+    def batches_per_epoch(self):
+        return math.ceil(self.X.shape[0] / self.batch_size)
+
+
+def tf_conv(x, kernel_size, n_features):
+    # input shape
+    x_shape = x.get_shape().as_list()
+    assert(len(x_shape) == 4)
+    x_features = x_shape[3]
+
+    # weights and bias
+    weight_shape = (kernel_size, kernel_size, x_features, n_features)
+    weight_stddev = math.sqrt(2.0 / (kernel_size * kernel_size * n_features))
+    weight = tf.Variable(
+            tf.random_normal(weight_shape, mean = 0.0, stddev = weight_stddev))
+    bias = tf.Variable(tf.zeros((n_features,)))
+
+    # operation
+    stride = 1
+    padding = "SAME"
+    result = tf.nn.conv2d(
+            x, weight,
+            strides = (1, stride, stride, 1),
+            padding = padding)
+    result = tf.nn.bias_add(result, bias)
+    return result
+
+
+def tf_activate(x):
+    return tf.nn.relu(x)
+
+
+def tf_downsample(x):
+    kernel_size = 3
+    stride = 2
+    padding = "SAME"
+    return tf.nn.max_pool(
+            x,
+            ksize = (1, kernel_size, kernel_size, 1),
+            strides = (1, stride, stride, 1),
+            padding = padding)
+
+
+def tf_flatten(x):
+    return tf.contrib.layers.flatten(x)
+
+
+def tf_fc(x, n_features):
+    # input shape
+    x_shape = x.get_shape().as_list()
+    assert(len(x_shape) == 2)
+    x_features = x_shape[1]
+
+    # weights and bias
+    weight_shape = (x_features, n_features)
+    weight_stddev = math.sqrt(2.0 / n_features)
+    weight = tf.Variable(
+            tf.random_normal(weight_shape, mean = 0.0, stddev = weight_stddev))
+    bias = tf.Variable(tf.zeros((n_features,)))
+
+    # operation
+    result = tf.matmul(
+            x, weight)
+    result = tf.add(result, bias)
+    return result
+
+
+class TSCModel(object):
+
+    def __init__(self, img_shape, n_labels):
+        self.session = tf.Session()
+        self.img_shape = img_shape
+        self.n_labels = n_labels
+        self.learning_rate = 1e-3
+        self.n_epochs = 100
+        self.log_frequency = 250
+        self.logs = dict()
+        self.define_graph()
+
+    
+    def define_graph(self):
+        img_batch_shape = (None,) + self.img_shape
+        label_batch_shape = (None,)
+        # inputs
+        self.x = tf.placeholder(tf.float32, shape = img_batch_shape)
+        self.y = tf.placeholder(tf.int32, shape = label_batch_shape)
+
+        kernel_size = 3
+        n_channels = 32
+        # architecture
+        features = self.x
+        for i in range(2):
+            features = tf_conv(features, kernel_size, (i+1)*n_channels)
+            features = tf_activate(features)
+            features = tf_downsample(features)
+        features = tf_flatten(features)
+        features = tf_fc(features, 128)
+        features = tf_activate(features)
+        features = tf_fc(features, 64)
+        features = tf_activate(features)
+        self.logits = tf_fc(features, self.n_labels)
+
+        # loss
+        self.loss_op = tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(
+                labels = self.y,
+                logits = self.logits))
+        # accuracy
+        correct_logits = tf.equal(
+                tf.cast(tf.argmax(self.logits, axis = 1), tf.int32),
+                self.y)
+        self.accuracy_op = tf.reduce_mean(tf.cast(correct_logits, tf.float32))
+
+        optimizer = tf.train.AdamOptimizer(
+                learning_rate = self.learning_rate)
+        self.train_op = optimizer.minimize(self.loss_op)
+
+        # init
+        self.session.run(tf.global_variables_initializer())
+
+
+    def fit(self, batches, batches_valid):
+        self.batches = batches
+        self.batches_valid = batches_valid
+        total_batches = batches.batches_per_epoch() * self.n_epochs
+        for batch in range(total_batches):
+            X_batch, y_batch = batches.get_batch()
+            feed_dict = {
+                    self.x: X_batch,
+                    self.y: y_batch}
+            fetch_dict = {
+                    "train": self.train_op,
+                    "loss": self.loss_op,
+                    "accuracy": self.accuracy_op}
+            result = self.session.run(fetch_dict, feed_dict)
+            self.log_training(batch, total_batches, result)
+
+
+    def log_training(self, batch, total_batches, result):
+        metrics = ["loss", "accuracy"]
+        for metric in metrics:
+            if metric not in self.logs:
+                self.logs[metric] = []
+            self.logs[metric].append(result[metric])
+        if batch % self.log_frequency == 0 or batch + 1 == total_batches:
+            print("Batch {} / {} = {:.2f} %".format(batch, total_batches, 100 * batch / total_batches))
+            for metric in metrics:
+                metric_logs = self.logs[metric]
+                average = sum(metric_logs) / len(metric_logs)
+                print("{:20}: {:.4}".format("Training " + metric, average))
+                self.logs[metric] = []
+            val_metrics = self.evaluate(self.batches_valid)
+            for k, v in val_metrics.items():
+                print("{:20}: {:.4}".format("Validation " + k, v))
+
+
+    def evaluate(self, batches):
+        total_batches = batches.batches_per_epoch()
+        logs = dict()
+        for batch in range(total_batches):
+            X_batch, y_batch = batches.get_batch()
+            feed_dict = {
+                    self.x: X_batch,
+                    self.y: y_batch}
+            fetch_dict = {
+                    "loss": self.loss_op,
+                    "accuracy": self.accuracy_op}
+            result = self.session.run(fetch_dict, feed_dict)
+            for metric in result:
+                if not metric in logs:
+                    logs[metric] = []
+                logs[metric].append(result[metric])
+        for metric in logs:
+            logs[metric] = sum(logs[metric]) / len(logs[metric])
+        return logs
 
 
 if __name__ == "__main__":
@@ -212,4 +449,10 @@ if __name__ == "__main__":
     X, y = data["train"]
     batch_size = 64
     batches = DataFlow(X, y, batch_size)
-    X_batch, y_batch = batches.get_batch()
+    X_valid, y_valid = data["valid"]
+    batches_valid = DataFlowValid(X_valid, y_valid, batch_size, batches.process_batch)
+
+    img_shape = X.shape[1:]
+    n_labels = np.unique(y).shape[0]
+    model = TSCModel(img_shape, n_labels)
+    model.fit(batches, batches_valid)
