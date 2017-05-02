@@ -205,6 +205,7 @@ class DataFlow(object):
 
 
     def _next(self):
+        """Get next full batch, handle bookkeeping and shuffling."""
         batch_start, batch_end = self.batch_start, self.batch_start + self.batch_size
         if batch_end > self.X.shape[0]:
             self.shuffle()
@@ -223,14 +224,17 @@ class DataFlow(object):
 
 
     def process_batch(self, X, y):
+        """Preprocess and augment batch."""
         # normalize to [-1.0, 1.0]
         X = X / 127.5 - 1.0
 
         for i in range(X.shape[0]):
+            # scaling and bias for contrast and brightness augmentation
             scale = 1.0 + 0.1 * np.random.randn()
             bias = 0.0 + 0.1 * np.random.randn()
             X[i] = np.clip(scale*X[i] + bias, -1.0, 1.0)
 
+            # transformations for geometric augmentations
             angle = 6.0 * np.random.randn()
             zoom = 1 + 0.1 * np.random.randn()
             translation = 2.0 * np.random.randn()
@@ -275,6 +279,8 @@ class DataFlowValid(object):
 
 
     def _next(self):
+        """Get next batch (possibly not of full batch size) and handle
+        bookkeeping."""
         batch_start, batch_end = self.batch_start, self.batch_start + self.batch_size
         X_batch, y_batch = self.X[batch_start:batch_end], self.y[batch_start:batch_end]
         X_batch, y_batch = self.process_batch(X_batch, y_batch)
@@ -286,12 +292,14 @@ class DataFlowValid(object):
 
 
     def process_batch(self, X, y):
+        """Preprocess batch."""
         # normalize to [-1.0, 1.0]
         X = X / 127.5 - 1.0
         return X, y
 
 
     def get_batch(self):
+        """Get a batch and prepare next one asynchronuously."""
         result = self.buffer_.get()
         self._async_next()
         return result
@@ -339,6 +347,7 @@ def visualize_augmentation(X, y):
 
 
 def tf_conv(x, kernel_size, n_features, stride = 1):
+    """Pass x through a convolutional layer."""
     # input shape
     x_shape = x.get_shape().as_list()
     assert(len(x_shape) == 4)
@@ -362,6 +371,7 @@ def tf_conv(x, kernel_size, n_features, stride = 1):
 
 
 def tf_activate(x, keep_prob = 1.0):
+    """Activate and drop x."""
     method = "relu"
     x = tf.nn.dropout(x, keep_prob = keep_prob)
     if method == "relu":
@@ -371,6 +381,7 @@ def tf_activate(x, keep_prob = 1.0):
 
 
 def tf_downsample(x):
+    """Subsample x by a factor of two."""
     method = "stridedconv"
     if method == "maxpool":
         kernel_size = 3
@@ -389,10 +400,12 @@ def tf_downsample(x):
 
 
 def tf_flatten(x):
+    """Flatten x to prepare as input for fc layer."""
     return tf.contrib.layers.flatten(x)
 
 
 def tf_fc(x, n_features):
+    """Pass x through fully connected layer."""
     # input shape
     x_shape = x.get_shape().as_list()
     assert(len(x_shape) == 2)
@@ -413,6 +426,12 @@ def tf_fc(x, n_features):
 
 
 class TSCModel(object):
+    """Traffic Sign Classifier. Expects batches with images normalized to
+    [-1, 1]. Uses a simple architecture with four blocks of
+    convolution-activation-downsampling followed by a two layer, fully
+    connected classifier. Cross entropy is minimized by Adam with a learning
+    rate decaying linearly from 1e-3 to 1e-8 in the specified number of
+    steps."""
 
     def __init__(self, img_shape, n_labels, n_total_steps):
         self.session = tf.Session()
@@ -427,6 +446,7 @@ class TSCModel(object):
 
     
     def define_graph(self):
+        """Define tensorflow graph."""
         img_batch_shape = (None,) + self.img_shape
         label_batch_shape = (None,)
         # inputs
@@ -442,15 +462,6 @@ class TSCModel(object):
             features = tf_conv(features, kernel_size, (i+1)*n_channels)
             features = tf_activate(features, keep_prob = self.keep_prob)
             features = tf_downsample(features)
-        """
-        for i in range(2):
-            n_features = features.get_shape().as_list()[3]
-            residual = features
-            for j in range(2):
-                residual = tf_conv(residual, kernel_size, n_features)
-                residual = tf_activate(residual, keep_prob = self.keep_prob)
-            features = features + residual
-        """
         features = tf_flatten(features)
         features = tf_fc(features, 128)
         features = tf_activate(features, keep_prob = self.keep_prob)
@@ -487,6 +498,7 @@ class TSCModel(object):
 
 
     def fit(self, batches, batches_valid):
+        """Fit model to dataset and evaluate on validation set."""
         self.batches = batches
         self.batches_valid = batches_valid
         for batch in range(self.n_total_steps):
@@ -506,6 +518,8 @@ class TSCModel(object):
 
 
     def log_training(self, batch, total_batches, result):
+        """Keep average of training metrics and log them together with
+        validation metrics."""
         metrics = ["loss", "accuracy"]
         for metric in metrics:
             if metric not in self.logs:
@@ -526,6 +540,7 @@ class TSCModel(object):
 
 
     def evaluate(self, batches):
+        """Evaluate metrics averaged over one epoch."""
         total_batches = batches.batches_per_epoch()
         logs = dict()
         for batch in range(total_batches):
@@ -572,3 +587,11 @@ if __name__ == "__main__":
     total_batches = batches.batches_per_epoch() * n_epochs
     model = TSCModel(img_shape, n_labels, total_batches)
     model.fit(batches, batches_valid)
+
+    final_run = True
+    if final_run:
+        X_test, y_test = data["test"]
+        batches_test = DataFlowValid(X_test, y_test, batch_size)
+        metrics = model.evaluate(batches_test)
+        for k, v in metrics.items():
+            print("{:20}: {:.4}".format("Testing " + k, v))
