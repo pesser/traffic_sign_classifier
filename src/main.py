@@ -258,14 +258,13 @@ class DataFlow(object):
 
 
 class DataFlowValid(object):
-    """Similiar to DataFlow but for validation/testing data. Does not shuffle and
-    uses a given processing function."""
+    """Similiar to DataFlow but for validation/testing data. Does not
+    shuffle nor augment."""
 
-    def __init__(self, X, y, batch_size, process_batch):
+    def __init__(self, X, y, batch_size):
         self.X = X
         self.y = y
         self.batch_size = batch_size
-        self.process_batch = process_batch
         self.pool = ThreadPool(1)
         self.batch_start = 0
         self._async_next()
@@ -284,6 +283,12 @@ class DataFlowValid(object):
         else:
             self.batch_start = batch_end
         return X_batch, y_batch
+
+
+    def process_batch(self, X, y):
+        # normalize to [-1.0, 1.0]
+        X = X / 127.5 - 1.0
+        return X, y
 
 
     def get_batch(self):
@@ -437,6 +442,7 @@ class TSCModel(object):
             features = tf_conv(features, kernel_size, (i+1)*n_channels)
             features = tf_activate(features, keep_prob = self.keep_prob)
             features = tf_downsample(features)
+        """
         for i in range(2):
             n_features = features.get_shape().as_list()[3]
             residual = features
@@ -444,6 +450,7 @@ class TSCModel(object):
                 residual = tf_conv(residual, kernel_size, n_features)
                 residual = tf_activate(residual, keep_prob = self.keep_prob)
             features = features + residual
+        """
         features = tf_flatten(features)
         features = tf_fc(features, 128)
         features = tf_activate(features, keep_prob = self.keep_prob)
@@ -487,7 +494,7 @@ class TSCModel(object):
             feed_dict = {
                     self.x: X_batch,
                     self.y: y_batch,
-                    self.keep_prob: 0.5}
+                    self.keep_prob: 0.75}
             fetch_dict = {
                     "train": self.train_op,
                     "loss": self.loss_op,
@@ -557,7 +564,7 @@ if __name__ == "__main__":
     batch_size = 64
     batches = DataFlow(X, y, batch_size)
     X_valid, y_valid = data["valid"]
-    batches_valid = DataFlowValid(X_valid, y_valid, batch_size, batches.process_batch)
+    batches_valid = DataFlowValid(X_valid, y_valid, batch_size)
 
     img_shape = X.shape[1:]
     n_labels = np.unique(y).shape[0]
