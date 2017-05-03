@@ -456,7 +456,7 @@ class TSCModel(object):
         self.n_labels = n_labels
         self.n_total_steps = n_total_steps
         self.initial_learning_rate = 1e-3
-        self.end_learning_rate = 1e-8
+        self.end_learning_rate = 0.0
         self.log_frequency = 250
         self.logs = dict()
         self.define_graph()
@@ -475,7 +475,7 @@ class TSCModel(object):
         n_channels = 32
         # architecture
         features = self.x
-        for i in range(4):
+        for i in range(5):
             features = tf_conv(features, kernel_size, (i+1)*n_channels)
             features = tf_activate(features, keep_prob = self.keep_prob)
             features = tf_downsample(features)
@@ -495,6 +495,8 @@ class TSCModel(object):
                 tf.cast(tf.argmax(self.logits, axis = 1), tf.int32),
                 self.y)
         self.accuracy_op = tf.reduce_mean(tf.cast(correct_logits, tf.float32))
+        # categorical probabilities
+        self.categorical_probabilities = tf.nn.softmax(self.logits)
 
         self.global_step = tf.Variable(0, trainable = False)
         self.learning_rate = tf.train.polynomial_decay(
@@ -523,7 +525,7 @@ class TSCModel(object):
             feed_dict = {
                     self.x: X_batch,
                     self.y: y_batch,
-                    self.keep_prob: 0.80}
+                    self.keep_prob: 0.85}
             fetch_dict = {
                     "train": self.train_op,
                     "loss": self.loss_op,
@@ -579,6 +581,59 @@ class TSCModel(object):
         return logs
 
 
+    def evaluate_probabilities(self, batches):
+        """Evaluate categorical probabilities for each sample."""
+        total_batches = batches.batches_per_epoch()
+        catprobs = []
+        for batch in range(total_batches):
+            X_batch, y_batch = batches.get_batch()
+            feed_dict = {
+                    self.x: X_batch,
+                    self.y: y_batch,
+                    self.keep_prob: 1.0}
+            fetch_dict = {
+                    "catprobs": self.categorical_probabilities}
+            result = self.session.run(fetch_dict, feed_dict)
+            catprobs.append(result["catprobs"])
+        catprobs = np.concatenate(catprobs)
+        return catprobs
+
+
+def visualize_test_results(X, y, pred, signnames):
+    """Visualize images and their predicted class probabilities."""
+    assert(X.shape[0] == 14)
+    nrows = 2
+    ncols = 7
+    nlabels = 43
+    fig, axes = plt.subplots(nrows = 2 * nrows, ncols = ncols, figsize = (10, 10))
+    for i in range(nrows):
+        for j in range(ncols):
+            aximg = axes[2*i, j]
+            axprobs = axes[2*i + 1, j]
+            idx = i*ncols + j
+
+            img = X[idx]
+            aximg.imshow(img)
+            aximg.set_axis_off()
+
+            probs = pred[idx]
+            label = y[idx]
+            colors = probs.shape[0] * ["red"]
+            colors[label] = "green"
+
+            n_top = 5
+            topindices = sorted(np.arange(probs.shape[0]), key = lambda i: probs[i])[-n_top:]
+            topprobs = probs[topindices]
+            topcolors = [colors[i] for i in topindices]
+            ypos = np.arange(n_top)
+            axprobs.barh(ypos, topprobs, color = topcolors)
+            axprobs.set_yticks(ypos)
+            for ypos, l in zip(ypos, topindices):
+                axprobs.text(0.025, ypos, textwrap.fill(signnames[l], 20), fontsize = 6)
+            axprobs.set_axis_off()
+    fig.savefig(os.path.join(img_dir, "test_results.png"))
+
+
 if __name__ == "__main__":
     files = download_data()
     data = extract_data(files["traffic-signs-data.zip"])
@@ -620,3 +675,6 @@ if __name__ == "__main__":
         metrics = model.evaluate(batches_test)
         for k, v in metrics.items():
             print("{:20}: {:.4}".format("Additional Testing " + k, v))
+        # get categorical probabilities for visualization
+        catprobs = model.evaluate_probabilities(batches_test)
+        visualize_test_results(X_test, y_test, catprobs, signnames)
