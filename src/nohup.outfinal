@@ -1,0 +1,1567 @@
+Found traffic-signs-data.zip. Skipping download.
+Found signnames.csv. Skipping download.
+Skipping extraction of /net/hci-storage02/groupfolders/compvis/pesser/nd/tsc/CarND-Traffic-Sign-Classifier-Project/src/data/traffic-signs-data.zip
+|  Split   | Samples  |  Height  |  Width   | Channels | Classes  |
+|------------------------------------------------------------------
+|  train   |  34799   |    32    |    32    |    3     |    43    |
+|  valid   |   4410   |    32    |    32    |    3     |    43    |
+|   test   |  12630   |    32    |    32    |    3     |    43    |
+|           Fraction           |         Traffic Sign         |
+|--------------------------------------------------------------
+|            5.78 %            |     Speed limit (50km/h)     |
+|            5.69 %            |     Speed limit (30km/h)     |
+|            5.52 %            |            Yield             |
+|            0.52 %            |     Speed limit (20km/h)     |
+|            0.52 %            | Dangerous curve to the left  |
+|            0.52 %            |     Go straight or left      |
+2017-05-03 13:24:34.804513: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-05-03 13:24:34.804548: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-05-03 13:24:34.804555: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2017-05-03 13:24:34.804560: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-05-03 13:24:34.804566: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+2017-05-03 13:24:35.070917: I tensorflow/core/common_runtime/gpu/gpu_device.cc:887] Found device 0 with properties: 
+name: TITAN X (Pascal)
+major: 6 minor: 1 memoryClockRate (GHz) 1.531
+pciBusID 0000:02:00.0
+Total memory: 11.90GiB
+Free memory: 11.29GiB
+2017-05-03 13:24:35.070957: I tensorflow/core/common_runtime/gpu/gpu_device.cc:908] DMA: 0 
+2017-05-03 13:24:35.070965: I tensorflow/core/common_runtime/gpu/gpu_device.cc:918] 0:   Y 
+2017-05-03 13:24:35.070985: I tensorflow/core/common_runtime/gpu/gpu_device.cc:977] Creating TensorFlow device (/gpu:0) -> (device: 0, name: TITAN X (Pascal), pci bus id: 0000:02:00.0)
+Batch 0 / 54400 = 0.00 %
+Global step         : 1
+Learning rate       : 1.0000e-03
+Training loss       : 3.948
+Training accuracy   : 0.01562
+Validation loss     : 3.77
+Validation accuracy : 0.01517
+Batch 250 / 54400 = 0.46 %
+Global step         : 251
+Learning rate       : 9.9540e-04
+Training loss       : 2.921
+Training accuracy   : 0.2088
+Validation loss     : 1.664
+Validation accuracy : 0.4597
+Batch 500 / 54400 = 0.92 %
+Global step         : 501
+Learning rate       : 9.9081e-04
+Training loss       : 1.653
+Training accuracy   : 0.5004
+Validation loss     : 0.8654
+Validation accuracy : 0.7142
+Batch 750 / 54400 = 1.38 %
+Global step         : 751
+Learning rate       : 9.8621e-04
+Training loss       : 1.141
+Training accuracy   : 0.6503
+Validation loss     : 0.6074
+Validation accuracy : 0.801
+Batch 1000 / 54400 = 1.84 %
+Global step         : 1001
+Learning rate       : 9.8162e-04
+Training loss       : 0.8833
+Training accuracy   : 0.7317
+Validation loss     : 0.318
+Validation accuracy : 0.8948
+Batch 1250 / 54400 = 2.30 %
+Global step         : 1251
+Learning rate       : 9.7702e-04
+Training loss       : 0.7431
+Training accuracy   : 0.7775
+Validation loss     : 0.3106
+Validation accuracy : 0.8905
+Batch 1500 / 54400 = 2.76 %
+Global step         : 1501
+Learning rate       : 9.7243e-04
+Training loss       : 0.6608
+Training accuracy   : 0.8087
+Validation loss     : 0.3106
+Validation accuracy : 0.904
+Batch 1750 / 54400 = 3.22 %
+Global step         : 1751
+Learning rate       : 9.6783e-04
+Training loss       : 0.5872
+Training accuracy   : 0.8276
+Validation loss     : 0.2299
+Validation accuracy : 0.9343
+Batch 2000 / 54400 = 3.68 %
+Global step         : 2001
+Learning rate       : 9.6324e-04
+Training loss       : 0.53
+Training accuracy   : 0.8501
+Validation loss     : 0.234
+Validation accuracy : 0.9332
+Batch 2250 / 54400 = 4.14 %
+Global step         : 2251
+Learning rate       : 9.5864e-04
+Training loss       : 0.4846
+Training accuracy   : 0.8653
+Validation loss     : 0.1926
+Validation accuracy : 0.9423
+Batch 2500 / 54400 = 4.60 %
+Global step         : 2501
+Learning rate       : 9.5404e-04
+Training loss       : 0.4614
+Training accuracy   : 0.8718
+Validation loss     : 0.1971
+Validation accuracy : 0.9434
+Batch 2750 / 54400 = 5.06 %
+Global step         : 2751
+Learning rate       : 9.4945e-04
+Training loss       : 0.4149
+Training accuracy   : 0.8868
+Validation loss     : 0.1795
+Validation accuracy : 0.9565
+Batch 3000 / 54400 = 5.51 %
+Global step         : 3001
+Learning rate       : 9.4485e-04
+Training loss       : 0.3981
+Training accuracy   : 0.8929
+Validation loss     : 0.1546
+Validation accuracy : 0.9558
+Batch 3250 / 54400 = 5.97 %
+Global step         : 3251
+Learning rate       : 9.4026e-04
+Training loss       : 0.416
+Training accuracy   : 0.8882
+Validation loss     : 0.1671
+Validation accuracy : 0.9567
+Batch 3500 / 54400 = 6.43 %
+Global step         : 3501
+Learning rate       : 9.3566e-04
+Training loss       : 0.4018
+Training accuracy   : 0.8922
+Validation loss     : 0.189
+Validation accuracy : 0.9561
+Batch 3750 / 54400 = 6.89 %
+Global step         : 3751
+Learning rate       : 9.3107e-04
+Training loss       : 0.374
+Training accuracy   : 0.9017
+Validation loss     : 0.175
+Validation accuracy : 0.9649
+Batch 4000 / 54400 = 7.35 %
+Global step         : 4001
+Learning rate       : 9.2647e-04
+Training loss       : 0.3839
+Training accuracy   : 0.9012
+Validation loss     : 0.1939
+Validation accuracy : 0.9534
+Batch 4250 / 54400 = 7.81 %
+Global step         : 4251
+Learning rate       : 9.2188e-04
+Training loss       : 0.3474
+Training accuracy   : 0.9101
+Validation loss     : 0.1403
+Validation accuracy : 0.9606
+Batch 4500 / 54400 = 8.27 %
+Global step         : 4501
+Learning rate       : 9.1728e-04
+Training loss       : 0.3342
+Training accuracy   : 0.9097
+Validation loss     : 0.1001
+Validation accuracy : 0.9737
+Batch 4750 / 54400 = 8.73 %
+Global step         : 4751
+Learning rate       : 9.1268e-04
+Training loss       : 0.3445
+Training accuracy   : 0.9107
+Validation loss     : 0.1116
+Validation accuracy : 0.9703
+Batch 5000 / 54400 = 9.19 %
+Global step         : 5001
+Learning rate       : 9.0809e-04
+Training loss       : 0.3466
+Training accuracy   : 0.9083
+Validation loss     : 0.1187
+Validation accuracy : 0.9688
+Batch 5250 / 54400 = 9.65 %
+Global step         : 5251
+Learning rate       : 9.0349e-04
+Training loss       : 0.3166
+Training accuracy   : 0.9183
+Validation loss     : 0.1491
+Validation accuracy : 0.9622
+Batch 5500 / 54400 = 10.11 %
+Global step         : 5501
+Learning rate       : 8.9890e-04
+Training loss       : 0.2975
+Training accuracy   : 0.9239
+Validation loss     : 0.106
+Validation accuracy : 0.9683
+Batch 5750 / 54400 = 10.57 %
+Global step         : 5751
+Learning rate       : 8.9430e-04
+Training loss       : 0.314
+Training accuracy   : 0.9217
+Validation loss     : 0.1675
+Validation accuracy : 0.9524
+Batch 6000 / 54400 = 11.03 %
+Global step         : 6001
+Learning rate       : 8.8971e-04
+Training loss       : 0.3254
+Training accuracy   : 0.9169
+Validation loss     : 0.1156
+Validation accuracy : 0.971
+Batch 6250 / 54400 = 11.49 %
+Global step         : 6251
+Learning rate       : 8.8511e-04
+Training loss       : 0.3072
+Training accuracy   : 0.9194
+Validation loss     : 0.1173
+Validation accuracy : 0.9683
+Batch 6500 / 54400 = 11.95 %
+Global step         : 6501
+Learning rate       : 8.8051e-04
+Training loss       : 0.3018
+Training accuracy   : 0.9234
+Validation loss     : 0.1465
+Validation accuracy : 0.9621
+Batch 6750 / 54400 = 12.41 %
+Global step         : 6751
+Learning rate       : 8.7592e-04
+Training loss       : 0.3194
+Training accuracy   : 0.9194
+Validation loss     : 0.08197
+Validation accuracy : 0.9808
+Batch 7000 / 54400 = 12.87 %
+Global step         : 7001
+Learning rate       : 8.7132e-04
+Training loss       : 0.2989
+Training accuracy   : 0.9239
+Validation loss     : 0.08291
+Validation accuracy : 0.9785
+Batch 7250 / 54400 = 13.33 %
+Global step         : 7251
+Learning rate       : 8.6673e-04
+Training loss       : 0.2884
+Training accuracy   : 0.9279
+Validation loss     : 0.1124
+Validation accuracy : 0.9715
+Batch 7500 / 54400 = 13.79 %
+Global step         : 7501
+Learning rate       : 8.6213e-04
+Training loss       : 0.2994
+Training accuracy   : 0.9243
+Validation loss     : 0.1526
+Validation accuracy : 0.9658
+Batch 7750 / 54400 = 14.25 %
+Global step         : 7751
+Learning rate       : 8.5754e-04
+Training loss       : 0.2926
+Training accuracy   : 0.9282
+Validation loss     : 0.1307
+Validation accuracy : 0.9669
+Batch 8000 / 54400 = 14.71 %
+Global step         : 8001
+Learning rate       : 8.5294e-04
+Training loss       : 0.3198
+Training accuracy   : 0.9208
+Validation loss     : 0.1499
+Validation accuracy : 0.968
+Batch 8250 / 54400 = 15.17 %
+Global step         : 8251
+Learning rate       : 8.4835e-04
+Training loss       : 0.2926
+Training accuracy   : 0.927
+Validation loss     : 0.09526
+Validation accuracy : 0.9744
+Batch 8500 / 54400 = 15.62 %
+Global step         : 8501
+Learning rate       : 8.4375e-04
+Training loss       : 0.261
+Training accuracy   : 0.9348
+Validation loss     : 0.1595
+Validation accuracy : 0.9739
+Batch 8750 / 54400 = 16.08 %
+Global step         : 8751
+Learning rate       : 8.3915e-04
+Training loss       : 0.3079
+Training accuracy   : 0.9233
+Validation loss     : 0.09843
+Validation accuracy : 0.9751
+Batch 9000 / 54400 = 16.54 %
+Global step         : 9001
+Learning rate       : 8.3456e-04
+Training loss       : 0.2737
+Training accuracy   : 0.9338
+Validation loss     : 0.101
+Validation accuracy : 0.9762
+Batch 9250 / 54400 = 17.00 %
+Global step         : 9251
+Learning rate       : 8.2996e-04
+Training loss       : 0.2968
+Training accuracy   : 0.9268
+Validation loss     : 0.1212
+Validation accuracy : 0.978
+Batch 9500 / 54400 = 17.46 %
+Global step         : 9501
+Learning rate       : 8.2537e-04
+Training loss       : 0.2851
+Training accuracy   : 0.9326
+Validation loss     : 0.2005
+Validation accuracy : 0.9644
+Batch 9750 / 54400 = 17.92 %
+Global step         : 9751
+Learning rate       : 8.2077e-04
+Training loss       : 0.3089
+Training accuracy   : 0.9281
+Validation loss     : 0.2163
+Validation accuracy : 0.9554
+Batch 10000 / 54400 = 18.38 %
+Global step         : 10001
+Learning rate       : 8.1618e-04
+Training loss       : 0.2411
+Training accuracy   : 0.9403
+Validation loss     : 0.1024
+Validation accuracy : 0.9731
+Batch 10250 / 54400 = 18.84 %
+Global step         : 10251
+Learning rate       : 8.1158e-04
+Training loss       : 0.2652
+Training accuracy   : 0.937
+Validation loss     : 0.1769
+Validation accuracy : 0.9599
+Batch 10500 / 54400 = 19.30 %
+Global step         : 10501
+Learning rate       : 8.0699e-04
+Training loss       : 0.2747
+Training accuracy   : 0.9363
+Validation loss     : 0.1074
+Validation accuracy : 0.9746
+Batch 10750 / 54400 = 19.76 %
+Global step         : 10751
+Learning rate       : 8.0239e-04
+Training loss       : 0.2689
+Training accuracy   : 0.937
+Validation loss     : 0.1299
+Validation accuracy : 0.969
+Batch 11000 / 54400 = 20.22 %
+Global step         : 11001
+Learning rate       : 7.9779e-04
+Training loss       : 0.2482
+Training accuracy   : 0.9409
+Validation loss     : 0.1229
+Validation accuracy : 0.9735
+Batch 11250 / 54400 = 20.68 %
+Global step         : 11251
+Learning rate       : 7.9320e-04
+Training loss       : 0.2408
+Training accuracy   : 0.9423
+Validation loss     : 0.08819
+Validation accuracy : 0.9796
+Batch 11500 / 54400 = 21.14 %
+Global step         : 11501
+Learning rate       : 7.8860e-04
+Training loss       : 0.2432
+Training accuracy   : 0.9434
+Validation loss     : 0.09115
+Validation accuracy : 0.978
+Batch 11750 / 54400 = 21.60 %
+Global step         : 11751
+Learning rate       : 7.8401e-04
+Training loss       : 0.2376
+Training accuracy   : 0.9446
+Validation loss     : 0.09595
+Validation accuracy : 0.9762
+Batch 12000 / 54400 = 22.06 %
+Global step         : 12001
+Learning rate       : 7.7941e-04
+Training loss       : 0.264
+Training accuracy   : 0.934
+Validation loss     : 0.09056
+Validation accuracy : 0.9769
+Batch 12250 / 54400 = 22.52 %
+Global step         : 12251
+Learning rate       : 7.7482e-04
+Training loss       : 0.2148
+Training accuracy   : 0.9477
+Validation loss     : 0.1122
+Validation accuracy : 0.9787
+Batch 12500 / 54400 = 22.98 %
+Global step         : 12501
+Learning rate       : 7.7022e-04
+Training loss       : 0.258
+Training accuracy   : 0.9399
+Validation loss     : 0.1536
+Validation accuracy : 0.9638
+Batch 12750 / 54400 = 23.44 %
+Global step         : 12751
+Learning rate       : 7.6562e-04
+Training loss       : 0.2599
+Training accuracy   : 0.9391
+Validation loss     : 0.1066
+Validation accuracy : 0.9742
+Batch 13000 / 54400 = 23.90 %
+Global step         : 13001
+Learning rate       : 7.6103e-04
+Training loss       : 0.2175
+Training accuracy   : 0.946
+Validation loss     : 0.1533
+Validation accuracy : 0.9633
+Batch 13250 / 54400 = 24.36 %
+Global step         : 13251
+Learning rate       : 7.5643e-04
+Training loss       : 0.2347
+Training accuracy   : 0.9441
+Validation loss     : 0.1418
+Validation accuracy : 0.9758
+Batch 13500 / 54400 = 24.82 %
+Global step         : 13501
+Learning rate       : 7.5184e-04
+Training loss       : 0.278
+Training accuracy   : 0.9346
+Validation loss     : 0.1554
+Validation accuracy : 0.9728
+Batch 13750 / 54400 = 25.28 %
+Global step         : 13751
+Learning rate       : 7.4724e-04
+Training loss       : 0.2343
+Training accuracy   : 0.944
+Validation loss     : 0.07228
+Validation accuracy : 0.9848
+Batch 14000 / 54400 = 25.74 %
+Global step         : 14001
+Learning rate       : 7.4265e-04
+Training loss       : 0.2547
+Training accuracy   : 0.9389
+Validation loss     : 0.1035
+Validation accuracy : 0.9794
+Batch 14250 / 54400 = 26.19 %
+Global step         : 14251
+Learning rate       : 7.3805e-04
+Training loss       : 0.2473
+Training accuracy   : 0.9443
+Validation loss     : 0.1265
+Validation accuracy : 0.9778
+Batch 14500 / 54400 = 26.65 %
+Global step         : 14501
+Learning rate       : 7.3346e-04
+Training loss       : 0.2338
+Training accuracy   : 0.9446
+Validation loss     : 0.0967
+Validation accuracy : 0.9783
+Batch 14750 / 54400 = 27.11 %
+Global step         : 14751
+Learning rate       : 7.2886e-04
+Training loss       : 0.2396
+Training accuracy   : 0.9433
+Validation loss     : 0.1274
+Validation accuracy : 0.9744
+Batch 15000 / 54400 = 27.57 %
+Global step         : 15001
+Learning rate       : 7.2426e-04
+Training loss       : 0.2467
+Training accuracy   : 0.9436
+Validation loss     : 0.1873
+Validation accuracy : 0.9604
+Batch 15250 / 54400 = 28.03 %
+Global step         : 15251
+Learning rate       : 7.1967e-04
+Training loss       : 0.2131
+Training accuracy   : 0.9494
+Validation loss     : 0.1176
+Validation accuracy : 0.9798
+Batch 15500 / 54400 = 28.49 %
+Global step         : 15501
+Learning rate       : 7.1507e-04
+Training loss       : 0.1789
+Training accuracy   : 0.9566
+Validation loss     : 0.09517
+Validation accuracy : 0.9823
+Batch 15750 / 54400 = 28.95 %
+Global step         : 15751
+Learning rate       : 7.1048e-04
+Training loss       : 0.2152
+Training accuracy   : 0.9514
+Validation loss     : 0.07933
+Validation accuracy : 0.9835
+Batch 16000 / 54400 = 29.41 %
+Global step         : 16001
+Learning rate       : 7.0588e-04
+Training loss       : 0.2269
+Training accuracy   : 0.9483
+Validation loss     : 0.09538
+Validation accuracy : 0.9814
+Batch 16250 / 54400 = 29.87 %
+Global step         : 16251
+Learning rate       : 7.0129e-04
+Training loss       : 0.187
+Training accuracy   : 0.9562
+Validation loss     : 0.0872
+Validation accuracy : 0.9812
+Batch 16500 / 54400 = 30.33 %
+Global step         : 16501
+Learning rate       : 6.9669e-04
+Training loss       : 0.2216
+Training accuracy   : 0.9486
+Validation loss     : 0.1166
+Validation accuracy : 0.975
+Batch 16750 / 54400 = 30.79 %
+Global step         : 16751
+Learning rate       : 6.9210e-04
+Training loss       : 0.218
+Training accuracy   : 0.9517
+Validation loss     : 0.1641
+Validation accuracy : 0.9771
+Batch 17000 / 54400 = 31.25 %
+Global step         : 17001
+Learning rate       : 6.8750e-04
+Training loss       : 0.2102
+Training accuracy   : 0.9503
+Validation loss     : 0.0812
+Validation accuracy : 0.983
+Batch 17250 / 54400 = 31.71 %
+Global step         : 17251
+Learning rate       : 6.8290e-04
+Training loss       : 0.193
+Training accuracy   : 0.9561
+Validation loss     : 0.1013
+Validation accuracy : 0.9812
+Batch 17500 / 54400 = 32.17 %
+Global step         : 17501
+Learning rate       : 6.7831e-04
+Training loss       : 0.198
+Training accuracy   : 0.9534
+Validation loss     : 0.09752
+Validation accuracy : 0.9812
+Batch 17750 / 54400 = 32.63 %
+Global step         : 17751
+Learning rate       : 6.7371e-04
+Training loss       : 0.2091
+Training accuracy   : 0.9501
+Validation loss     : 0.09632
+Validation accuracy : 0.9814
+Batch 18000 / 54400 = 33.09 %
+Global step         : 18001
+Learning rate       : 6.6912e-04
+Training loss       : 0.1896
+Training accuracy   : 0.955
+Validation loss     : 0.09307
+Validation accuracy : 0.9814
+Batch 18250 / 54400 = 33.55 %
+Global step         : 18251
+Learning rate       : 6.6452e-04
+Training loss       : 0.1728
+Training accuracy   : 0.9591
+Validation loss     : 0.08139
+Validation accuracy : 0.9853
+Batch 18500 / 54400 = 34.01 %
+Global step         : 18501
+Learning rate       : 6.5993e-04
+Training loss       : 0.2058
+Training accuracy   : 0.9521
+Validation loss     : 0.07725
+Validation accuracy : 0.9857
+Batch 18750 / 54400 = 34.47 %
+Global step         : 18751
+Learning rate       : 6.5533e-04
+Training loss       : 0.2112
+Training accuracy   : 0.9545
+Validation loss     : 0.06625
+Validation accuracy : 0.9871
+Batch 19000 / 54400 = 34.93 %
+Global step         : 19001
+Learning rate       : 6.5074e-04
+Training loss       : 0.1924
+Training accuracy   : 0.9566
+Validation loss     : 0.04991
+Validation accuracy : 0.9896
+Batch 19250 / 54400 = 35.39 %
+Global step         : 19251
+Learning rate       : 6.4614e-04
+Training loss       : 0.1943
+Training accuracy   : 0.9538
+Validation loss     : 0.1324
+Validation accuracy : 0.9783
+Batch 19500 / 54400 = 35.85 %
+Global step         : 19501
+Learning rate       : 6.4154e-04
+Training loss       : 0.2058
+Training accuracy   : 0.9519
+Validation loss     : 0.04307
+Validation accuracy : 0.99
+Batch 19750 / 54400 = 36.31 %
+Global step         : 19751
+Learning rate       : 6.3695e-04
+Training loss       : 0.1797
+Training accuracy   : 0.9577
+Validation loss     : 0.08147
+Validation accuracy : 0.9835
+Batch 20000 / 54400 = 36.76 %
+Global step         : 20001
+Learning rate       : 6.3235e-04
+Training loss       : 0.2033
+Training accuracy   : 0.954
+Validation loss     : 0.06233
+Validation accuracy : 0.9862
+Batch 20250 / 54400 = 37.22 %
+Global step         : 20251
+Learning rate       : 6.2776e-04
+Training loss       : 0.1782
+Training accuracy   : 0.9595
+Validation loss     : 0.06372
+Validation accuracy : 0.9878
+Batch 20500 / 54400 = 37.68 %
+Global step         : 20501
+Learning rate       : 6.2316e-04
+Training loss       : 0.1921
+Training accuracy   : 0.9567
+Validation loss     : 0.06473
+Validation accuracy : 0.9846
+Batch 20750 / 54400 = 38.14 %
+Global step         : 20751
+Learning rate       : 6.1857e-04
+Training loss       : 0.1943
+Training accuracy   : 0.9543
+Validation loss     : 0.08309
+Validation accuracy : 0.9792
+Batch 21000 / 54400 = 38.60 %
+Global step         : 21001
+Learning rate       : 6.1397e-04
+Training loss       : 0.1705
+Training accuracy   : 0.9614
+Validation loss     : 0.08109
+Validation accuracy : 0.9837
+Batch 21250 / 54400 = 39.06 %
+Global step         : 21251
+Learning rate       : 6.0938e-04
+Training loss       : 0.1606
+Training accuracy   : 0.9634
+Validation loss     : 0.07843
+Validation accuracy : 0.9862
+Batch 21500 / 54400 = 39.52 %
+Global step         : 21501
+Learning rate       : 6.0478e-04
+Training loss       : 0.192
+Training accuracy   : 0.9572
+Validation loss     : 0.08163
+Validation accuracy : 0.9812
+Batch 21750 / 54400 = 39.98 %
+Global step         : 21751
+Learning rate       : 6.0018e-04
+Training loss       : 0.175
+Training accuracy   : 0.9598
+Validation loss     : 0.08092
+Validation accuracy : 0.9844
+Batch 22000 / 54400 = 40.44 %
+Global step         : 22001
+Learning rate       : 5.9559e-04
+Training loss       : 0.1869
+Training accuracy   : 0.9585
+Validation loss     : 0.0754
+Validation accuracy : 0.9844
+Batch 22250 / 54400 = 40.90 %
+Global step         : 22251
+Learning rate       : 5.9099e-04
+Training loss       : 0.1759
+Training accuracy   : 0.9609
+Validation loss     : 0.06475
+Validation accuracy : 0.9855
+Batch 22500 / 54400 = 41.36 %
+Global step         : 22501
+Learning rate       : 5.8640e-04
+Training loss       : 0.193
+Training accuracy   : 0.9555
+Validation loss     : 0.07992
+Validation accuracy : 0.9851
+Batch 22750 / 54400 = 41.82 %
+Global step         : 22751
+Learning rate       : 5.8180e-04
+Training loss       : 0.1632
+Training accuracy   : 0.9616
+Validation loss     : 0.07404
+Validation accuracy : 0.9864
+Batch 23000 / 54400 = 42.28 %
+Global step         : 23001
+Learning rate       : 5.7721e-04
+Training loss       : 0.1464
+Training accuracy   : 0.9661
+Validation loss     : 0.05058
+Validation accuracy : 0.9885
+Batch 23250 / 54400 = 42.74 %
+Global step         : 23251
+Learning rate       : 5.7261e-04
+Training loss       : 0.1509
+Training accuracy   : 0.9646
+Validation loss     : 0.05767
+Validation accuracy : 0.9903
+Batch 23500 / 54400 = 43.20 %
+Global step         : 23501
+Learning rate       : 5.6801e-04
+Training loss       : 0.1793
+Training accuracy   : 0.9593
+Validation loss     : 0.04717
+Validation accuracy : 0.9916
+Batch 23750 / 54400 = 43.66 %
+Global step         : 23751
+Learning rate       : 5.6342e-04
+Training loss       : 0.1663
+Training accuracy   : 0.9605
+Validation loss     : 0.1165
+Validation accuracy : 0.9812
+Batch 24000 / 54400 = 44.12 %
+Global step         : 24001
+Learning rate       : 5.5882e-04
+Training loss       : 0.1578
+Training accuracy   : 0.9638
+Validation loss     : 0.06633
+Validation accuracy : 0.9841
+Batch 24250 / 54400 = 44.58 %
+Global step         : 24251
+Learning rate       : 5.5423e-04
+Training loss       : 0.157
+Training accuracy   : 0.9649
+Validation loss     : 0.0653
+Validation accuracy : 0.9891
+Batch 24500 / 54400 = 45.04 %
+Global step         : 24501
+Learning rate       : 5.4963e-04
+Training loss       : 0.1705
+Training accuracy   : 0.9613
+Validation loss     : 0.0785
+Validation accuracy : 0.9832
+Batch 24750 / 54400 = 45.50 %
+Global step         : 24751
+Learning rate       : 5.4504e-04
+Training loss       : 0.1728
+Training accuracy   : 0.9609
+Validation loss     : 0.04937
+Validation accuracy : 0.99
+Batch 25000 / 54400 = 45.96 %
+Global step         : 25001
+Learning rate       : 5.4044e-04
+Training loss       : 0.1391
+Training accuracy   : 0.9676
+Validation loss     : 0.04582
+Validation accuracy : 0.9898
+Batch 25250 / 54400 = 46.42 %
+Global step         : 25251
+Learning rate       : 5.3585e-04
+Training loss       : 0.1303
+Training accuracy   : 0.9694
+Validation loss     : 0.1155
+Validation accuracy : 0.9805
+Batch 25500 / 54400 = 46.88 %
+Global step         : 25501
+Learning rate       : 5.3125e-04
+Training loss       : 0.2184
+Training accuracy   : 0.9531
+Validation loss     : 0.09024
+Validation accuracy : 0.9812
+Batch 25750 / 54400 = 47.33 %
+Global step         : 25751
+Learning rate       : 5.2665e-04
+Training loss       : 0.1677
+Training accuracy   : 0.9614
+Validation loss     : 0.06865
+Validation accuracy : 0.9835
+Batch 26000 / 54400 = 47.79 %
+Global step         : 26001
+Learning rate       : 5.2206e-04
+Training loss       : 0.1434
+Training accuracy   : 0.9666
+Validation loss     : 0.07977
+Validation accuracy : 0.9871
+Batch 26250 / 54400 = 48.25 %
+Global step         : 26251
+Learning rate       : 5.1746e-04
+Training loss       : 0.1395
+Training accuracy   : 0.9664
+Validation loss     : 0.06794
+Validation accuracy : 0.9848
+Batch 26500 / 54400 = 48.71 %
+Global step         : 26501
+Learning rate       : 5.1287e-04
+Training loss       : 0.1351
+Training accuracy   : 0.9689
+Validation loss     : 0.05511
+Validation accuracy : 0.9885
+Batch 26750 / 54400 = 49.17 %
+Global step         : 26751
+Learning rate       : 5.0827e-04
+Training loss       : 0.1471
+Training accuracy   : 0.9683
+Validation loss     : 0.2812
+Validation accuracy : 0.9346
+Batch 27000 / 54400 = 49.63 %
+Global step         : 27001
+Learning rate       : 5.0368e-04
+Training loss       : 0.1406
+Training accuracy   : 0.967
+Validation loss     : 0.07941
+Validation accuracy : 0.99
+Batch 27250 / 54400 = 50.09 %
+Global step         : 27251
+Learning rate       : 4.9908e-04
+Training loss       : 0.1359
+Training accuracy   : 0.9695
+Validation loss     : 0.09419
+Validation accuracy : 0.9837
+Batch 27500 / 54400 = 50.55 %
+Global step         : 27501
+Learning rate       : 4.9449e-04
+Training loss       : 0.1565
+Training accuracy   : 0.9658
+Validation loss     : 0.07421
+Validation accuracy : 0.9835
+Batch 27750 / 54400 = 51.01 %
+Global step         : 27751
+Learning rate       : 4.8989e-04
+Training loss       : 0.1249
+Training accuracy   : 0.9702
+Validation loss     : 0.07858
+Validation accuracy : 0.9855
+Batch 28000 / 54400 = 51.47 %
+Global step         : 28001
+Learning rate       : 4.8529e-04
+Training loss       : 0.143
+Training accuracy   : 0.9677
+Validation loss     : 0.09157
+Validation accuracy : 0.9846
+Batch 28250 / 54400 = 51.93 %
+Global step         : 28251
+Learning rate       : 4.8070e-04
+Training loss       : 0.1332
+Training accuracy   : 0.9694
+Validation loss     : 0.1034
+Validation accuracy : 0.9785
+Batch 28500 / 54400 = 52.39 %
+Global step         : 28501
+Learning rate       : 4.7610e-04
+Training loss       : 0.1208
+Training accuracy   : 0.9726
+Validation loss     : 0.05306
+Validation accuracy : 0.9878
+Batch 28750 / 54400 = 52.85 %
+Global step         : 28751
+Learning rate       : 4.7151e-04
+Training loss       : 0.1275
+Training accuracy   : 0.9709
+Validation loss     : 0.07849
+Validation accuracy : 0.9866
+Batch 29000 / 54400 = 53.31 %
+Global step         : 29001
+Learning rate       : 4.6691e-04
+Training loss       : 0.1194
+Training accuracy   : 0.9732
+Validation loss     : 0.06083
+Validation accuracy : 0.9871
+Batch 29250 / 54400 = 53.77 %
+Global step         : 29251
+Learning rate       : 4.6232e-04
+Training loss       : 0.1327
+Training accuracy   : 0.9692
+Validation loss     : 0.07041
+Validation accuracy : 0.9855
+Batch 29500 / 54400 = 54.23 %
+Global step         : 29501
+Learning rate       : 4.5772e-04
+Training loss       : 0.1545
+Training accuracy   : 0.9659
+Validation loss     : 0.05039
+Validation accuracy : 0.9871
+Batch 29750 / 54400 = 54.69 %
+Global step         : 29751
+Learning rate       : 4.5313e-04
+Training loss       : 0.1633
+Training accuracy   : 0.9657
+Validation loss     : 0.07346
+Validation accuracy : 0.9846
+Batch 30000 / 54400 = 55.15 %
+Global step         : 30001
+Learning rate       : 4.4853e-04
+Training loss       : 0.1355
+Training accuracy   : 0.968
+Validation loss     : 0.08604
+Validation accuracy : 0.9823
+Batch 30250 / 54400 = 55.61 %
+Global step         : 30251
+Learning rate       : 4.4393e-04
+Training loss       : 0.1175
+Training accuracy   : 0.9737
+Validation loss     : 0.05406
+Validation accuracy : 0.9882
+Batch 30500 / 54400 = 56.07 %
+Global step         : 30501
+Learning rate       : 4.3934e-04
+Training loss       : 0.1106
+Training accuracy   : 0.9732
+Validation loss     : 0.05245
+Validation accuracy : 0.9916
+Batch 30750 / 54400 = 56.53 %
+Global step         : 30751
+Learning rate       : 4.3474e-04
+Training loss       : 0.117
+Training accuracy   : 0.9729
+Validation loss     : 0.07167
+Validation accuracy : 0.9871
+Batch 31000 / 54400 = 56.99 %
+Global step         : 31001
+Learning rate       : 4.3015e-04
+Training loss       : 0.1385
+Training accuracy   : 0.9725
+Validation loss     : 0.04049
+Validation accuracy : 0.99
+Batch 31250 / 54400 = 57.44 %
+Global step         : 31251
+Learning rate       : 4.2555e-04
+Training loss       : 0.1198
+Training accuracy   : 0.9725
+Validation loss     : 0.05749
+Validation accuracy : 0.9864
+Batch 31500 / 54400 = 57.90 %
+Global step         : 31501
+Learning rate       : 4.2096e-04
+Training loss       : 0.12
+Training accuracy   : 0.9714
+Validation loss     : 0.06217
+Validation accuracy : 0.9869
+Batch 31750 / 54400 = 58.36 %
+Global step         : 31751
+Learning rate       : 4.1636e-04
+Training loss       : 0.1037
+Training accuracy   : 0.9751
+Validation loss     : 0.0406
+Validation accuracy : 0.9923
+Batch 32000 / 54400 = 58.82 %
+Global step         : 32001
+Learning rate       : 4.1176e-04
+Training loss       : 0.1213
+Training accuracy   : 0.9712
+Validation loss     : 0.04449
+Validation accuracy : 0.9912
+Batch 32250 / 54400 = 59.28 %
+Global step         : 32251
+Learning rate       : 4.0717e-04
+Training loss       : 0.1307
+Training accuracy   : 0.97
+Validation loss     : 0.08957
+Validation accuracy : 0.9882
+Batch 32500 / 54400 = 59.74 %
+Global step         : 32501
+Learning rate       : 4.0257e-04
+Training loss       : 0.09766
+Training accuracy   : 0.9768
+Validation loss     : 0.0634
+Validation accuracy : 0.9871
+Batch 32750 / 54400 = 60.20 %
+Global step         : 32751
+Learning rate       : 3.9798e-04
+Training loss       : 0.1046
+Training accuracy   : 0.9766
+Validation loss     : 0.04717
+Validation accuracy : 0.9912
+Batch 33000 / 54400 = 60.66 %
+Global step         : 33001
+Learning rate       : 3.9338e-04
+Training loss       : 0.1279
+Training accuracy   : 0.9693
+Validation loss     : 0.03975
+Validation accuracy : 0.9925
+Batch 33250 / 54400 = 61.12 %
+Global step         : 33251
+Learning rate       : 3.8879e-04
+Training loss       : 0.1114
+Training accuracy   : 0.9752
+Validation loss     : 0.04016
+Validation accuracy : 0.9909
+Batch 33500 / 54400 = 61.58 %
+Global step         : 33501
+Learning rate       : 3.8419e-04
+Training loss       : 0.09895
+Training accuracy   : 0.9769
+Validation loss     : 0.03835
+Validation accuracy : 0.9918
+Batch 33750 / 54400 = 62.04 %
+Global step         : 33751
+Learning rate       : 3.7960e-04
+Training loss       : 0.1195
+Training accuracy   : 0.9739
+Validation loss     : 0.03815
+Validation accuracy : 0.9939
+Batch 34000 / 54400 = 62.50 %
+Global step         : 34001
+Learning rate       : 3.7500e-04
+Training loss       : 0.09974
+Training accuracy   : 0.9761
+Validation loss     : 0.05546
+Validation accuracy : 0.9878
+Batch 34250 / 54400 = 62.96 %
+Global step         : 34251
+Learning rate       : 3.7040e-04
+Training loss       : 0.08209
+Training accuracy   : 0.9796
+Validation loss     : 0.05369
+Validation accuracy : 0.9907
+Batch 34500 / 54400 = 63.42 %
+Global step         : 34501
+Learning rate       : 3.6581e-04
+Training loss       : 0.1072
+Training accuracy   : 0.9762
+Validation loss     : 0.05509
+Validation accuracy : 0.9887
+Batch 34750 / 54400 = 63.88 %
+Global step         : 34751
+Learning rate       : 3.6121e-04
+Training loss       : 0.09999
+Training accuracy   : 0.9769
+Validation loss     : 0.05138
+Validation accuracy : 0.9896
+Batch 35000 / 54400 = 64.34 %
+Global step         : 35001
+Learning rate       : 3.5662e-04
+Training loss       : 0.09162
+Training accuracy   : 0.9794
+Validation loss     : 0.03593
+Validation accuracy : 0.9925
+Batch 35250 / 54400 = 64.80 %
+Global step         : 35251
+Learning rate       : 3.5202e-04
+Training loss       : 0.1026
+Training accuracy   : 0.9771
+Validation loss     : 0.03567
+Validation accuracy : 0.9903
+Batch 35500 / 54400 = 65.26 %
+Global step         : 35501
+Learning rate       : 3.4743e-04
+Training loss       : 0.1009
+Training accuracy   : 0.9756
+Validation loss     : 0.05358
+Validation accuracy : 0.9909
+Batch 35750 / 54400 = 65.72 %
+Global step         : 35751
+Learning rate       : 3.4283e-04
+Training loss       : 0.0999
+Training accuracy   : 0.9773
+Validation loss     : 0.04402
+Validation accuracy : 0.9914
+Batch 36000 / 54400 = 66.18 %
+Global step         : 36001
+Learning rate       : 3.3824e-04
+Training loss       : 0.08425
+Training accuracy   : 0.9799
+Validation loss     : 0.03537
+Validation accuracy : 0.9912
+Batch 36250 / 54400 = 66.64 %
+Global step         : 36251
+Learning rate       : 3.3364e-04
+Training loss       : 0.1093
+Training accuracy   : 0.9755
+Validation loss     : 0.03564
+Validation accuracy : 0.9932
+Batch 36500 / 54400 = 67.10 %
+Global step         : 36501
+Learning rate       : 3.2904e-04
+Training loss       : 0.09054
+Training accuracy   : 0.9784
+Validation loss     : 0.03458
+Validation accuracy : 0.9918
+Batch 36750 / 54400 = 67.56 %
+Global step         : 36751
+Learning rate       : 3.2445e-04
+Training loss       : 0.08532
+Training accuracy   : 0.9814
+Validation loss     : 0.05935
+Validation accuracy : 0.988
+Batch 37000 / 54400 = 68.01 %
+Global step         : 37001
+Learning rate       : 3.1985e-04
+Training loss       : 0.0945
+Training accuracy   : 0.9811
+Validation loss     : 0.06404
+Validation accuracy : 0.9889
+Batch 37250 / 54400 = 68.47 %
+Global step         : 37251
+Learning rate       : 3.1526e-04
+Training loss       : 0.09272
+Training accuracy   : 0.9809
+Validation loss     : 0.05512
+Validation accuracy : 0.9896
+Batch 37500 / 54400 = 68.93 %
+Global step         : 37501
+Learning rate       : 3.1066e-04
+Training loss       : 0.07983
+Training accuracy   : 0.9805
+Validation loss     : 0.03561
+Validation accuracy : 0.9925
+Batch 37750 / 54400 = 69.39 %
+Global step         : 37751
+Learning rate       : 3.0607e-04
+Training loss       : 0.09679
+Training accuracy   : 0.9785
+Validation loss     : 0.03923
+Validation accuracy : 0.9939
+Batch 38000 / 54400 = 69.85 %
+Global step         : 38001
+Learning rate       : 3.0147e-04
+Training loss       : 0.08691
+Training accuracy   : 0.9819
+Validation loss     : 0.03686
+Validation accuracy : 0.9937
+Batch 38250 / 54400 = 70.31 %
+Global step         : 38251
+Learning rate       : 2.9688e-04
+Training loss       : 0.1012
+Training accuracy   : 0.9782
+Validation loss     : 0.07739
+Validation accuracy : 0.9889
+Batch 38500 / 54400 = 70.77 %
+Global step         : 38501
+Learning rate       : 2.9228e-04
+Training loss       : 0.08533
+Training accuracy   : 0.9806
+Validation loss     : 0.03298
+Validation accuracy : 0.9914
+Batch 38750 / 54400 = 71.23 %
+Global step         : 38751
+Learning rate       : 2.8768e-04
+Training loss       : 0.08122
+Training accuracy   : 0.9829
+Validation loss     : 0.0336
+Validation accuracy : 0.9923
+Batch 39000 / 54400 = 71.69 %
+Global step         : 39001
+Learning rate       : 2.8309e-04
+Training loss       : 0.08843
+Training accuracy   : 0.981
+Validation loss     : 0.03049
+Validation accuracy : 0.9932
+Batch 39250 / 54400 = 72.15 %
+Global step         : 39251
+Learning rate       : 2.7849e-04
+Training loss       : 0.07637
+Training accuracy   : 0.9831
+Validation loss     : 0.03059
+Validation accuracy : 0.9939
+Batch 39500 / 54400 = 72.61 %
+Global step         : 39501
+Learning rate       : 2.7390e-04
+Training loss       : 0.07908
+Training accuracy   : 0.983
+Validation loss     : 0.02535
+Validation accuracy : 0.9939
+Batch 39750 / 54400 = 73.07 %
+Global step         : 39751
+Learning rate       : 2.6930e-04
+Training loss       : 0.07047
+Training accuracy   : 0.9844
+Validation loss     : 0.03697
+Validation accuracy : 0.9918
+Batch 40000 / 54400 = 73.53 %
+Global step         : 40001
+Learning rate       : 2.6471e-04
+Training loss       : 0.08172
+Training accuracy   : 0.9808
+Validation loss     : 0.04985
+Validation accuracy : 0.99
+Batch 40250 / 54400 = 73.99 %
+Global step         : 40251
+Learning rate       : 2.6011e-04
+Training loss       : 0.07922
+Training accuracy   : 0.9817
+Validation loss     : 0.03739
+Validation accuracy : 0.9912
+Batch 40500 / 54400 = 74.45 %
+Global step         : 40501
+Learning rate       : 2.5551e-04
+Training loss       : 0.07414
+Training accuracy   : 0.9832
+Validation loss     : 0.04395
+Validation accuracy : 0.9912
+Batch 40750 / 54400 = 74.91 %
+Global step         : 40751
+Learning rate       : 2.5092e-04
+Training loss       : 0.07517
+Training accuracy   : 0.9823
+Validation loss     : 0.03788
+Validation accuracy : 0.9916
+Batch 41000 / 54400 = 75.37 %
+Global step         : 41001
+Learning rate       : 2.4632e-04
+Training loss       : 0.07211
+Training accuracy   : 0.9827
+Validation loss     : 0.05103
+Validation accuracy : 0.9896
+Batch 41250 / 54400 = 75.83 %
+Global step         : 41251
+Learning rate       : 2.4173e-04
+Training loss       : 0.06844
+Training accuracy   : 0.9822
+Validation loss     : 0.0312
+Validation accuracy : 0.9939
+Batch 41500 / 54400 = 76.29 %
+Global step         : 41501
+Learning rate       : 2.3713e-04
+Training loss       : 0.06614
+Training accuracy   : 0.984
+Validation loss     : 0.03976
+Validation accuracy : 0.9928
+Batch 41750 / 54400 = 76.75 %
+Global step         : 41751
+Learning rate       : 2.3254e-04
+Training loss       : 0.0822
+Training accuracy   : 0.9815
+Validation loss     : 0.03063
+Validation accuracy : 0.9946
+Batch 42000 / 54400 = 77.21 %
+Global step         : 42001
+Learning rate       : 2.2794e-04
+Training loss       : 0.07167
+Training accuracy   : 0.9838
+Validation loss     : 0.03868
+Validation accuracy : 0.9921
+Batch 42250 / 54400 = 77.67 %
+Global step         : 42251
+Learning rate       : 2.2335e-04
+Training loss       : 0.06658
+Training accuracy   : 0.9832
+Validation loss     : 0.02785
+Validation accuracy : 0.9925
+Batch 42500 / 54400 = 78.12 %
+Global step         : 42501
+Learning rate       : 2.1875e-04
+Training loss       : 0.06257
+Training accuracy   : 0.9841
+Validation loss     : 0.03402
+Validation accuracy : 0.9918
+Batch 42750 / 54400 = 78.58 %
+Global step         : 42751
+Learning rate       : 2.1415e-04
+Training loss       : 0.07422
+Training accuracy   : 0.9816
+Validation loss     : 0.05184
+Validation accuracy : 0.9878
+Batch 43000 / 54400 = 79.04 %
+Global step         : 43001
+Learning rate       : 2.0956e-04
+Training loss       : 0.07371
+Training accuracy   : 0.9835
+Validation loss     : 0.03121
+Validation accuracy : 0.9932
+Batch 43250 / 54400 = 79.50 %
+Global step         : 43251
+Learning rate       : 2.0496e-04
+Training loss       : 0.07045
+Training accuracy   : 0.9841
+Validation loss     : 0.05681
+Validation accuracy : 0.9887
+Batch 43500 / 54400 = 79.96 %
+Global step         : 43501
+Learning rate       : 2.0037e-04
+Training loss       : 0.0741
+Training accuracy   : 0.9832
+Validation loss     : 0.05817
+Validation accuracy : 0.9889
+Batch 43750 / 54400 = 80.42 %
+Global step         : 43751
+Learning rate       : 1.9577e-04
+Training loss       : 0.06772
+Training accuracy   : 0.9841
+Validation loss     : 0.04114
+Validation accuracy : 0.9903
+Batch 44000 / 54400 = 80.88 %
+Global step         : 44001
+Learning rate       : 1.9118e-04
+Training loss       : 0.06469
+Training accuracy   : 0.9838
+Validation loss     : 0.0363
+Validation accuracy : 0.9907
+Batch 44250 / 54400 = 81.34 %
+Global step         : 44251
+Learning rate       : 1.8658e-04
+Training loss       : 0.05972
+Training accuracy   : 0.9849
+Validation loss     : 0.02896
+Validation accuracy : 0.9939
+Batch 44500 / 54400 = 81.80 %
+Global step         : 44501
+Learning rate       : 1.8199e-04
+Training loss       : 0.05961
+Training accuracy   : 0.985
+Validation loss     : 0.04424
+Validation accuracy : 0.9918
+Batch 44750 / 54400 = 82.26 %
+Global step         : 44751
+Learning rate       : 1.7739e-04
+Training loss       : 0.05526
+Training accuracy   : 0.9869
+Validation loss     : 0.04309
+Validation accuracy : 0.99
+Batch 45000 / 54400 = 82.72 %
+Global step         : 45001
+Learning rate       : 1.7279e-04
+Training loss       : 0.06052
+Training accuracy   : 0.9858
+Validation loss     : 0.04857
+Validation accuracy : 0.9894
+Batch 45250 / 54400 = 83.18 %
+Global step         : 45251
+Learning rate       : 1.6820e-04
+Training loss       : 0.05086
+Training accuracy   : 0.987
+Validation loss     : 0.02528
+Validation accuracy : 0.9939
+Batch 45500 / 54400 = 83.64 %
+Global step         : 45501
+Learning rate       : 1.6360e-04
+Training loss       : 0.06323
+Training accuracy   : 0.9862
+Validation loss     : 0.02899
+Validation accuracy : 0.9934
+Batch 45750 / 54400 = 84.10 %
+Global step         : 45751
+Learning rate       : 1.5901e-04
+Training loss       : 0.05841
+Training accuracy   : 0.9856
+Validation loss     : 0.03153
+Validation accuracy : 0.9934
+Batch 46000 / 54400 = 84.56 %
+Global step         : 46001
+Learning rate       : 1.5441e-04
+Training loss       : 0.06325
+Training accuracy   : 0.9868
+Validation loss     : 0.03647
+Validation accuracy : 0.9918
+Batch 46250 / 54400 = 85.02 %
+Global step         : 46251
+Learning rate       : 1.4982e-04
+Training loss       : 0.06464
+Training accuracy   : 0.9851
+Validation loss     : 0.04129
+Validation accuracy : 0.9912
+Batch 46500 / 54400 = 85.48 %
+Global step         : 46501
+Learning rate       : 1.4522e-04
+Training loss       : 0.05763
+Training accuracy   : 0.9869
+Validation loss     : 0.03735
+Validation accuracy : 0.9921
+Batch 46750 / 54400 = 85.94 %
+Global step         : 46751
+Learning rate       : 1.4063e-04
+Training loss       : 0.05458
+Training accuracy   : 0.9873
+Validation loss     : 0.03433
+Validation accuracy : 0.9932
+Batch 47000 / 54400 = 86.40 %
+Global step         : 47001
+Learning rate       : 1.3603e-04
+Training loss       : 0.0556
+Training accuracy   : 0.9872
+Validation loss     : 0.03538
+Validation accuracy : 0.9932
+Batch 47250 / 54400 = 86.86 %
+Global step         : 47251
+Learning rate       : 1.3143e-04
+Training loss       : 0.04989
+Training accuracy   : 0.9891
+Validation loss     : 0.02754
+Validation accuracy : 0.9941
+Batch 47500 / 54400 = 87.32 %
+Global step         : 47501
+Learning rate       : 1.2684e-04
+Training loss       : 0.04194
+Training accuracy   : 0.9895
+Validation loss     : 0.02824
+Validation accuracy : 0.9939
+Batch 47750 / 54400 = 87.78 %
+Global step         : 47751
+Learning rate       : 1.2224e-04
+Training loss       : 0.05214
+Training accuracy   : 0.9866
+Validation loss     : 0.02632
+Validation accuracy : 0.9941
+Batch 48000 / 54400 = 88.24 %
+Global step         : 48001
+Learning rate       : 1.1765e-04
+Training loss       : 0.0627
+Training accuracy   : 0.9869
+Validation loss     : 0.02604
+Validation accuracy : 0.9943
+Batch 48250 / 54400 = 88.69 %
+Global step         : 48251
+Learning rate       : 1.1305e-04
+Training loss       : 0.04883
+Training accuracy   : 0.9891
+Validation loss     : 0.03349
+Validation accuracy : 0.9925
+Batch 48500 / 54400 = 89.15 %
+Global step         : 48501
+Learning rate       : 1.0846e-04
+Training loss       : 0.04781
+Training accuracy   : 0.9888
+Validation loss     : 0.02721
+Validation accuracy : 0.9934
+Batch 48750 / 54400 = 89.61 %
+Global step         : 48751
+Learning rate       : 1.0386e-04
+Training loss       : 0.05358
+Training accuracy   : 0.9881
+Validation loss     : 0.02213
+Validation accuracy : 0.9952
+Batch 49000 / 54400 = 90.07 %
+Global step         : 49001
+Learning rate       : 9.9265e-05
+Training loss       : 0.0549
+Training accuracy   : 0.9878
+Validation loss     : 0.02481
+Validation accuracy : 0.9952
+Batch 49250 / 54400 = 90.53 %
+Global step         : 49251
+Learning rate       : 9.4669e-05
+Training loss       : 0.04982
+Training accuracy   : 0.9889
+Validation loss     : 0.02558
+Validation accuracy : 0.9948
+Batch 49500 / 54400 = 90.99 %
+Global step         : 49501
+Learning rate       : 9.0074e-05
+Training loss       : 0.04485
+Training accuracy   : 0.9897
+Validation loss     : 0.02967
+Validation accuracy : 0.9939
+Batch 49750 / 54400 = 91.45 %
+Global step         : 49751
+Learning rate       : 8.5478e-05
+Training loss       : 0.04523
+Training accuracy   : 0.9892
+Validation loss     : 0.02396
+Validation accuracy : 0.995
+Batch 50000 / 54400 = 91.91 %
+Global step         : 50001
+Learning rate       : 8.0882e-05
+Training loss       : 0.04147
+Training accuracy   : 0.9901
+Validation loss     : 0.02519
+Validation accuracy : 0.9955
+Batch 50250 / 54400 = 92.37 %
+Global step         : 50251
+Learning rate       : 7.6287e-05
+Training loss       : 0.04723
+Training accuracy   : 0.9889
+Validation loss     : 0.02791
+Validation accuracy : 0.9934
+Batch 50500 / 54400 = 92.83 %
+Global step         : 50501
+Learning rate       : 7.1691e-05
+Training loss       : 0.04347
+Training accuracy   : 0.9893
+Validation loss     : 0.02952
+Validation accuracy : 0.9943
+Batch 50750 / 54400 = 93.29 %
+Global step         : 50751
+Learning rate       : 6.7096e-05
+Training loss       : 0.04273
+Training accuracy   : 0.9889
+Validation loss     : 0.02806
+Validation accuracy : 0.9952
+Batch 51000 / 54400 = 93.75 %
+Global step         : 51001
+Learning rate       : 6.2500e-05
+Training loss       : 0.04715
+Training accuracy   : 0.9896
+Validation loss     : 0.02291
+Validation accuracy : 0.9952
+Batch 51250 / 54400 = 94.21 %
+Global step         : 51251
+Learning rate       : 5.7904e-05
+Training loss       : 0.04186
+Training accuracy   : 0.9897
+Validation loss     : 0.0242
+Validation accuracy : 0.9957
+Batch 51500 / 54400 = 94.67 %
+Global step         : 51501
+Learning rate       : 5.3309e-05
+Training loss       : 0.04019
+Training accuracy   : 0.9905
+Validation loss     : 0.026
+Validation accuracy : 0.995
+Batch 51750 / 54400 = 95.13 %
+Global step         : 51751
+Learning rate       : 4.8713e-05
+Training loss       : 0.03619
+Training accuracy   : 0.9911
+Validation loss     : 0.02636
+Validation accuracy : 0.9955
+Batch 52000 / 54400 = 95.59 %
+Global step         : 52001
+Learning rate       : 4.4118e-05
+Training loss       : 0.03942
+Training accuracy   : 0.9904
+Validation loss     : 0.0257
+Validation accuracy : 0.9946
+Batch 52250 / 54400 = 96.05 %
+Global step         : 52251
+Learning rate       : 3.9522e-05
+Training loss       : 0.04029
+Training accuracy   : 0.9913
+Validation loss     : 0.02639
+Validation accuracy : 0.9946
+Batch 52500 / 54400 = 96.51 %
+Global step         : 52501
+Learning rate       : 3.4926e-05
+Training loss       : 0.03927
+Training accuracy   : 0.9898
+Validation loss     : 0.02815
+Validation accuracy : 0.9952
+Batch 52750 / 54400 = 96.97 %
+Global step         : 52751
+Learning rate       : 3.0331e-05
+Training loss       : 0.03663
+Training accuracy   : 0.9901
+Validation loss     : 0.02884
+Validation accuracy : 0.9952
+Batch 53000 / 54400 = 97.43 %
+Global step         : 53001
+Learning rate       : 2.5735e-05
+Training loss       : 0.03536
+Training accuracy   : 0.9906
+Validation loss     : 0.02904
+Validation accuracy : 0.9948
+Batch 53250 / 54400 = 97.89 %
+Global step         : 53251
+Learning rate       : 2.1140e-05
+Training loss       : 0.0358
+Training accuracy   : 0.9911
+Validation loss     : 0.02785
+Validation accuracy : 0.9955
+Batch 53500 / 54400 = 98.35 %
+Global step         : 53501
+Learning rate       : 1.6544e-05
+Training loss       : 0.03786
+Training accuracy   : 0.9905
+Validation loss     : 0.02881
+Validation accuracy : 0.995
+Batch 53750 / 54400 = 98.81 %
+Global step         : 53751
+Learning rate       : 1.1949e-05
+Training loss       : 0.03743
+Training accuracy   : 0.99
+Validation loss     : 0.03127
+Validation accuracy : 0.9946
+Batch 54000 / 54400 = 99.26 %
+Global step         : 54001
+Learning rate       : 7.3529e-06
+Training loss       : 0.03284
+Training accuracy   : 0.9912
+Validation loss     : 0.02809
+Validation accuracy : 0.995
+Batch 54250 / 54400 = 99.72 %
+Global step         : 54251
+Learning rate       : 2.7574e-06
+Training loss       : 0.0477
+Training accuracy   : 0.9898
+Validation loss     : 0.02772
+Validation accuracy : 0.9952
+Batch 54399 / 54400 = 100.00 %
+Global step         : 54400
+Learning rate       : 1.8358e-08
+Training loss       : 0.03369
+Training accuracy   : 0.9924
+Validation loss     : 0.02765
+Validation accuracy : 0.9952
+Testing loss        : 0.09345
+Testing accuracy    : 0.9862
+Additional Testing loss: 0.0
+Additional Testing accuracy: 1.0
