@@ -17,7 +17,7 @@ img_dir = os.path.join(os.getcwd(), "imgs")
 os.makedirs(img_dir, exist_ok = True)
 
 # path to additional test images
-test_dir = os.path.join(os.getcwd(), "test")
+test_dir = os.path.join(os.getcwd(), "test_images")
 
 
 def dl_progress(count, block_size, total_size):
