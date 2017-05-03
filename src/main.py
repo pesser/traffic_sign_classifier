@@ -16,6 +16,9 @@ os.makedirs(data_dir, exist_ok = True)
 img_dir = os.path.join(os.getcwd(), "imgs")
 os.makedirs(img_dir, exist_ok = True)
 
+# path to additional test images
+test_dir = os.path.join(os.getcwd(), "test")
+
 
 def dl_progress(count, block_size, total_size):
     """Progress bar used during download."""
@@ -70,6 +73,20 @@ def load_data(paths):
             data = pickle.load(f)
         result[split] = (data["features"], data["labels"])
     return result
+
+
+def load_test_data():
+    """Load additional testing data."""
+    X = []
+    y = []
+    for fname in os.listdir(test_dir):
+        label = int(fname.split("_")[0])
+        img = plt.imread(os.path.join(test_dir, fname))
+        X.append(img)
+        y.append(label)
+    X = np.stack(X)
+    y = np.stack(y)
+    return X, y
 
 
 def load_signnames(path):
@@ -506,7 +523,7 @@ class TSCModel(object):
             feed_dict = {
                     self.x: X_batch,
                     self.y: y_batch,
-                    self.keep_prob: 0.75}
+                    self.keep_prob: 0.80}
             fetch_dict = {
                     "train": self.train_op,
                     "loss": self.loss_op,
@@ -590,8 +607,16 @@ if __name__ == "__main__":
 
     final_run = True
     if final_run:
+        # finally test on original test set
         X_test, y_test = data["test"]
         batches_test = DataFlowValid(X_test, y_test, batch_size)
         metrics = model.evaluate(batches_test)
         for k, v in metrics.items():
             print("{:20}: {:.4}".format("Testing " + k, v))
+
+        # and on a few additional test images captured in the wild
+        X_test, y_test = load_test_data()
+        batches_test = DataFlowValid(X_test, y_test, batch_size)
+        metrics = model.evaluate(batches_test)
+        for k, v in metrics.items():
+            print("{:20}: {:.4}".format("Additional Testing " + k, v))
